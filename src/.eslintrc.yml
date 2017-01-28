@@ -1,0 +1,7 @@
+rules:
+   require-jsdoc:
+      - error
+      - require:
+           ClassDeclaration: true
+           FunctionDeclaration: true
+           MethodDefinition: true

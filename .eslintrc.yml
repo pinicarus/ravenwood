@@ -1,0 +1,55 @@
+env:
+   es6: true
+   node: true
+extends: 'eslint:recommended'
+rules:
+   comma-dangle:
+      - error
+      - always-multiline
+   complexity:
+      - error
+      - 7
+   indent:
+      - error
+      - tab
+      - ArrayExpression: first
+        CallExpression:
+           arguments: first
+        ObjectExpression: first
+        FunctionDeclaration:
+           parameters: first
+        FunctionExpression:
+           parameters: first
+        MemberExpression: 1
+        SwitchCase:       1
+   key-spacing:
+      - error
+      - align: value
+   linebreak-style:
+      - error
+      - unix
+   max-len:
+      - error
+      - code: 120
+   no-fallthrough:
+      - error
+      - commentPattern: fallthrough\b
+   no-mixed-spaces-and-tabs:
+      - error
+      - smart-tabs
+   no-unused-vars:
+      - error
+      - args: none
+   quotes:
+      - error
+      - double
+   semi:
+      - error
+      - always
+   valid-jsdoc:
+      - error
+      - matchDescription:         .+
+        requireParamDescription:  true
+        requireReturn:            false
+        requireReturnDescription: true
+        requireReturnType:        true
