@@ -40,6 +40,7 @@
 		"piquouze":     "5.0.0",
 		"ramda":        "0.23.0",
 		"route-trie":   "2.0.2",
+		"titlecase":    "1.1.2",
 		"topo":         "2.0.2"
 	},
 
