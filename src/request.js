@@ -91,7 +91,7 @@ const Request = class Request extends Message {
 	/**
 	 * Returns the request query parameters.
 	 *
-	 * @return {Object<String, String>} The request query parameters.
+	 * @returns {Object<String, String>} The request query parameters.
 	 */
 	get query() {
 		return R.clone(properties.get(this).query);

@@ -23,7 +23,7 @@
 	},
 
 	"scripts": {
-		"doc":         "jsdoc2md --heading-depth 1 --files src/**.js > API.md",
+		"doc":         "jsdoc2md --heading-depth 1 --files src/**.js src/di/**.js > API.md",
 		"lint":        "eslint . --ignore-path .gitignore",
 		"unittest":    "mocha --opts ./.mocha.opts",
 		"unitcov":     "istanbul cover -- _mocha --opts ./.mocha.opts",

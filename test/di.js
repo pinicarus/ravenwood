@@ -5,23 +5,21 @@ const assert = require("assert");
 const piquouze = require("piquouze");
 
 const {
-	DI,
-	transfer,
+	Factory,
+	Value,
 	scan,
+	transfer,
 } = requireSrc("di");
 
 describe("di", function () {
 	it("should conform", function () {
+		assert(Factory instanceof Function);
+		assert(Value instanceof Function);
 		assert(scan instanceof Function);
+		assert(transfer instanceof Function);
 	});
 
-	it("should store and transfer DI values", function () {
-		const di = new DI()
-			.registerFactory("foo", () => 1, new piquouze.caching.Always())
-			.registerFactory(function bar() { return 2; })
-			.registerValue("baz", 3)
-			.registerValue("quux", 4);
-
+	it("should transfer DI values", function () {
 		const container = {
 			factories: [],
 			values:    [],
@@ -35,7 +33,12 @@ describe("di", function () {
 			},
 		};
 
-		transfer(di, container, (name) => name.toUpperCase());
+		const mapping = (name) => name.toUpperCase();
+
+		transfer(new Factory("foo", () => 1, new piquouze.caching.Always()), container, mapping);
+		transfer(new Factory(function bar() { return 2; }), container, mapping);
+		transfer(new Value("baz", 3), container, mapping);
+		transfer(new Value("quux", 4), container, mapping);
 
 		assert.equal(container.factories.length, 2);
 		assert.equal(container.values.length, 2);

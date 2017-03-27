@@ -74,7 +74,7 @@ const Route = R.memoize(function Route(method, path, ...middlewares) {
 		 * The method to serve with this route.
 		 * @private
 		 *
-		 * @return {String} The method to serve with this route.
+		 * @returns {String} The method to serve with this route.
 		 */
 		static get method() {
 			return method;

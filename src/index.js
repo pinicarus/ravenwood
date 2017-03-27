@@ -1,11 +1,15 @@
 "use strict";
 
 const {Body}       = require("./body");
-const {DI}         = require("./di");
 const {Middleware} = require("./middleware");
 const {Request}    = require("./request");
 const {Route}      = require("./route");
 const status       = require("./status");
+
+const {
+	Factory,
+	Value,
+} = require("./di");
 
 const {
 	MissingResponse,
@@ -19,7 +23,6 @@ const {
 
 module.exports = Object.freeze({
 	Body,
-	DI,
 	Middleware,
 	Request,
 	Response,
@@ -27,9 +30,14 @@ module.exports = Object.freeze({
 	Server,
 	defaultPipeline,
 
+	DI: Object.freeze({
+		Factory,
+		Value,
+	}),
+
 	errors: Object.freeze({
 		MissingResponse,
 	}),
 
-	status: Object.freeze(Object.assign(status)),
+	status: Object.freeze(Object.assign({}, status)),
 });

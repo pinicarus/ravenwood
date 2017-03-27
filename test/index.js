@@ -7,13 +7,14 @@ const index = requireSrc("index");
 describe("API", function () {
 	it("should conform", function () {
 		assert(index.Body instanceof Function);
-		assert(index.DI instanceof Function);
 		assert(index.Middleware instanceof Function);
 		assert(index.Request instanceof Function);
 		assert(index.Response instanceof Function);
 		assert(index.Route instanceof Function);
 		assert(index.Server instanceof Function);
 		assert(index.defaultPipeline instanceof Function);
+		assert(index.DI.Factory instanceof Function);
+		assert(index.DI.Value instanceof Function);
 		assert(index.errors.MissingResponse instanceof Function);
 
 		assert.deepEqual(index.status, {
@@ -77,6 +78,7 @@ describe("API", function () {
 
 	it("should be immutable", function () {
 		assert.throws(() => { index.x = true; }, TypeError);
+		assert.throws(() => { index.DI.x = true; }, TypeError);
 		assert.throws(() => { index.errors.x = true; }, TypeError);
 		assert.throws(() => { index.status.x = true; }, TypeError);
 	});

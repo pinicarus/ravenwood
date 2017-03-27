@@ -48,7 +48,7 @@ const Middleware = R.memoize(function Middleware(type) {
 		 * Returns the middleware type.
 		 * @private
 		 *
-		 * @return {(String | Symbol)} The middleware type.
+		 * @returns {(String | Symbol)} The middleware type.
 		 */
 		static get type() {
 			return type || always;
@@ -74,7 +74,7 @@ const descriptorToClass = function descriptorToClass(descriptor) {
 		 *
 		 * @param {...*} values - The injected values to dispatch to the enter methods.
 		 *
-		 * @return {*} The value of the descriptor enter function.
+		 * @returns {*} The value of the descriptor enter function.
 		 */
 		enter(...values) {
 			return Reflect.apply(enter.functor, this, values);
@@ -85,7 +85,7 @@ const descriptorToClass = function descriptorToClass(descriptor) {
 		 *
 		 * @param {...*} values - The injected values to dispatch to the leave methods.
 		 *
-		 * @return {*} The value of the descriptor leave function.
+		 * @returns {*} The value of the descriptor leave function.
 		 */
 		leave(...values) {
 			return Reflect.apply(leave.functor, this, values);
