@@ -149,6 +149,6 @@ Each time a request is handled, a new child container is built and the request o
 of mapping the name `"request"`. The list of defined HTTP methods for the request path is registered with the result of
 mapping the name `"allowed"`.
 
-Each time a middleware or route handle function return an instance of the `DI` class, all the values and factories
-registered on it will be transfered to the container so that they can be injected on later stages, including during the
-exit phase of the pipeline.
+Each time a middleware or route handle function return an instance (or an array of instances) of the `DI.Factory` or
+`DI.Value` class, the value(s) or factory(ies) will be transfered to the container so that they can be injected on later
+stages, including during the exit phase of the pipeline.
