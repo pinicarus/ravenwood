@@ -39,14 +39,14 @@
 		"is-plain-obj": "1.1.0",
 		"piquouze":     "5.0.0",
 		"ramda":        "0.23.0",
-		"route-trie":   "2.0.2",
+		"route-trie":   "2.1.0",
 		"titlecase":    "1.1.2",
 		"topo":         "2.0.2"
 	},
 
 	"devDependencies": {
 		"coveralls":         "2.12.0",
-		"eslint":            "3.17.0",
+		"eslint":            "3.18.0",
 		"istanbul":          "0.4.5",
 		"jsdoc-to-markdown": "3.0.0",
 		"mocha":             "3.2.0"
