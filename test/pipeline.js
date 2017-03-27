@@ -5,9 +5,13 @@ const assert   = require("assert");
 const R        = require("ramda");
 const piquouze = require("piquouze");
 
-const {DI}       = requireSrc("di");
 const {Response} = requireSrc("response");
 const {run}      = requireSrc("pipeline");
+
+const {
+	Factory,
+	Value,
+} = requireSrc("di");
 
 describe("pipeline", function () {
 	it("should conform", function () {
@@ -119,7 +123,10 @@ describe("pipeline", function () {
 		const pipeline = [class {
 			enter() {
 				values.push(1);
-				return new DI().registerValue("statusCode", 201);
+				return [
+					new Factory("changer", () => (code) => code + 101),
+					new Value("statusCode", 201),
+				];
 			}
 
 			leave() {
@@ -140,13 +147,13 @@ describe("pipeline", function () {
 				this._statusCode = statusCode;
 			}
 
-			handle() {
+			handle(changer) {
 				values.push(3);
-				return new Response(this._statusCode);
+				return new Response(changer(this._statusCode));
 			}
 		}).then((response) => {
 			assert(response instanceof Response);
-			assert.equal(response.statusCode, 201);
+			assert.equal(response.statusCode, 302);
 			assert.deepEqual(values, [1, 2, 3, -2, -1]);
 		});
 	});

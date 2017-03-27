@@ -1,8 +1,9 @@
 "use strict";
 
-const R        = require("ramda");
-const facies   = require("facies");
 const piquouze = require("piquouze");
+
+const {Factory} = require("./di/factory");
+const {Value}   = require("./di/value");
 
 /**
  * A functor scanning result.
@@ -15,96 +16,28 @@ const piquouze = require("piquouze");
  */
 
 /**
- * Storage for internal properties of DI instances.
- * @private
- * @type {WeakMap}
- */
-const properties = new WeakMap();
-
-/**
- * A store for DI injectable values.
- */
-const DI = class DI {
-	/**
-	 * Constructs a new injectable values storage.
-	 */
-	constructor() {
-		properties.set(this, {
-			values:    {},
-			factories: {},
-		});
-	}
-
-	/**
-	 * Stores a value for registration.
-	 *
-	 * @param {String} name  - The name to register the value with.
-	 * @param {*}      value - The value to register.
-	 *
-	 * @returns {DI}        The DI storage with the value added for registration.
-	 * @throws  {TypeError} Whenever the name is not a string.
-	 */
-	registerValue(name, value) {
-		facies.match(arguments, [new facies.TypeDefinition(String)], false);
-
-		properties.get(this).values[name] = value;
-		return this;
-	}
-
-	/**
-	 * Stores a factory for registration.
-	 *
-	 * @param {String}   [name]   - The name to register the factory with.
-	 * @param {Function} factory  - The factory to register.
-	 * @param {Policy}   [policy] - The caching policy to register the factory with..
-	 *
-	 * @returns {DI}        The DI storage with the value added for registration.
-	 * @throws {TypeError} Whenever no name was given and none could be inferred.
-	 * @throws {TypeError} Whenever the factory is not a Function.
-	 * @throws {TypeError} Whenever the policy does not inherit from piquouze.Policy.
-	 */
-	registerFactory(name, factory, policy) {
-		const [
-			_name,
-			_factory,
-			_policy,
-		] = facies.match(arguments, [
-			new facies.TypeDefinition(String, null),
-			new facies.TypeDefinition(Function),
-			new facies.TypeDefinition(piquouze.Policy, null),
-		]);
-
-		const props = properties.get(this);
-
-		props.factories[_name || new piquouze.Scanner(_factory).name] = {
-			value:  _factory,
-			policy: _policy,
-		};
-		return this;
-	}
-};
-
-/**
- * Transfers values stored from a DI instance in a container.
+ * Transfers values stored from a DI Value or Factory instances in a container.
  * @private
  *
- * @param {DI}                 di        - The DI to transfer values from.
+ * @param {(Factory | Value)}  di        - The DI value or factory to transfer.
  * @param {piquouze.Container} container - The container to transfer values to.
  * @param {Function}           mapping   - The mapping of names to the DI container.
  */
 const transfer = function transfer(di, container, mapping) {
-	const props = properties.get(di);
+	const name = mapping(di.name);
 
-	R.forEachObjIndexed((value, name) => container.registerValue(mapping(name), value), props.values);
-	R.forEachObjIndexed(({value, policy}, name) => {
-		const _name = mapping(name);
-
-		if (policy) {
-			container.registerFactory(_name, value, policy);
-		} else {
-			container.registerFactory(_name, value);
-		}
-	}, props.factories);
+	switch (true) {
+		case di instanceof Factory:
+			if (di.policy) {
+				container.registerFactory(name, di.value, di.policy);
+			} else {
+				container.registerFactory(name, di.value);
+			}
+			break;
+		case di instanceof Value:
+			container.registerValue(name, di.value);
+			break;
+	}
 };
 
 /**
@@ -126,7 +59,8 @@ const scan = function scan(functor) {
 };
 
 module.exports = {
-	DI,
+	Factory,
+	Value,
 	transfer,
 	scan,
 };

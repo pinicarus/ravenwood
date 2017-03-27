@@ -1,6 +1,6 @@
 {
 	"name":        "ravenwood",
-	"version":     "1.0.0",
+	"version":     "2.0.0",
 	"description": "A pipeline-oriented and modular HTTP server",
 	"author":      "Pierre-Nicolas Clauss",
 	"license":     "WTFPL",
@@ -23,7 +23,7 @@
 	},
 
 	"scripts": {
-		"doc":         "jsdoc2md --heading-depth 1 --files src/**.js > API.md",
+		"doc":         "jsdoc2md --heading-depth 1 --files src/**.js src/di/**.js > API.md",
 		"lint":        "eslint . --ignore-path .gitignore",
 		"unittest":    "mocha --opts ./.mocha.opts",
 		"unitcov":     "istanbul cover -- _mocha --opts ./.mocha.opts",
@@ -39,14 +39,14 @@
 		"is-plain-obj": "1.1.0",
 		"piquouze":     "5.0.0",
 		"ramda":        "0.23.0",
-		"route-trie":   "2.0.2",
+		"route-trie":   "2.1.0",
 		"titlecase":    "1.1.2",
 		"topo":         "2.0.2"
 	},
 
 	"devDependencies": {
 		"coveralls":         "2.12.0",
-		"eslint":            "3.17.0",
+		"eslint":            "3.18.0",
 		"istanbul":          "0.4.5",
 		"jsdoc-to-markdown": "3.0.0",
 		"mocha":             "3.2.0"

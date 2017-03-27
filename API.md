@@ -4,9 +4,6 @@
 <dt><a href="#Body">Body</a></dt>
 <dd><p>A readable stream to a buffer or stream body.</p>
 </dd>
-<dt><a href="#DI">DI</a></dt>
-<dd><p>A store for DI injectable values.</p>
-</dd>
 <dt><a href="#Request">Request</a></dt>
 <dd><p>An HTTP request.</p>
 </dd>
@@ -18,6 +15,12 @@
 </dd>
 <dt><a href="#Server">Server</a></dt>
 <dd><p>An HTTP server designed to expose a consistent request handling pipeline with plugin-oriented hooks.</p>
+</dd>
+<dt><a href="#Factory">Factory</a></dt>
+<dd><p>A store for a DI injectable factory.</p>
+</dd>
+<dt><a href="#Value">Value</a></dt>
+<dd><p>A store for a DI injectable value.</p>
 </dd>
 </dl>
 
@@ -72,60 +75,6 @@ Constructs a new stream.
 | Param | Type | Description |
 | --- | --- | --- |
 | source | <code>Buffer</code> &#124; <code>stream.Readable</code> | The downstream data source. |
-
-<a name="DI"></a>
-
-# DI
-A store for DI injectable values.
-
-**Kind**: global class  
-
-* [DI](#DI)
-    * [new DI()](#new_DI_new)
-    * [.registerValue(name, value)](#DI+registerValue) ⇒ <code>[DI](#DI)</code>
-    * [.registerFactory([name], factory, [policy])](#DI+registerFactory) ⇒ <code>[DI](#DI)</code>
-
-<a name="new_DI_new"></a>
-
-## new DI()
-Constructs a new injectable values storage.
-
-<a name="DI+registerValue"></a>
-
-## dI.registerValue(name, value) ⇒ <code>[DI](#DI)</code>
-Stores a value for registration.
-
-**Kind**: instance method of <code>[DI](#DI)</code>  
-**Returns**: <code>[DI](#DI)</code> - The DI storage with the value added for registration.  
-**Throws**:
-
-- <code>TypeError</code> Whenever the name is not a string.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| name | <code>String</code> | The name to register the value with. |
-| value | <code>\*</code> | The value to register. |
-
-<a name="DI+registerFactory"></a>
-
-## dI.registerFactory([name], factory, [policy]) ⇒ <code>[DI](#DI)</code>
-Stores a factory for registration.
-
-**Kind**: instance method of <code>[DI](#DI)</code>  
-**Returns**: <code>[DI](#DI)</code> - The DI storage with the value added for registration.  
-**Throws**:
-
-- <code>TypeError</code> Whenever no name was given and none could be inferred.
-- <code>TypeError</code> Whenever the factory is not a Function.
-- <code>TypeError</code> Whenever the policy does not inherit from piquouze.Policy.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [name] | <code>String</code> | The name to register the factory with. |
-| factory | <code>function</code> | The factory to register. |
-| [policy] | <code>Policy</code> | The caching policy to register the factory with.. |
 
 <a name="Request"></a>
 
@@ -377,6 +326,99 @@ Stops listening for requests.
 
 **Kind**: instance method of <code>[Server](#Server)</code>  
 **Returns**: <code>Promise</code> - Resolved whenever the server is stopped.  
+<a name="Factory"></a>
+
+# Factory
+A store for a DI injectable factory.
+
+**Kind**: global class  
+
+* [Factory](#Factory)
+    * [new Factory([name], factory, [policy])](#new_Factory_new)
+    * [.name](#Factory+name) ⇒ <code>String</code>
+    * [.value](#Factory+value) ⇒ <code>function</code>
+    * [.policy](#Factory+policy) ⇒ <code>piquouze.Policy</code>
+
+<a name="new_Factory_new"></a>
+
+## new Factory([name], factory, [policy])
+Constructs a new injectable factory storage.
+
+**Throws**:
+
+- <code>TypeError</code> Whenever no name was given and none could be inferred.
+- <code>TypeError</code> Whenever the factory is not a Function.
+- <code>TypeError</code> Whenever the policy does not inherit from piquouze.Policy.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [name] | <code>String</code> | The name to register the factory with. |
+| factory | <code>function</code> | The factory to register. |
+| [policy] | <code>piquouze.Policy</code> | The caching policy to register the factory with. |
+
+<a name="Factory+name"></a>
+
+## factory.name ⇒ <code>String</code>
+Returns the name to register the factory with.
+
+**Kind**: instance property of <code>[Factory](#Factory)</code>  
+**Returns**: <code>String</code> - - The name to register the factory with.  
+<a name="Factory+value"></a>
+
+## factory.value ⇒ <code>function</code>
+Returns the factory to register.
+
+**Kind**: instance property of <code>[Factory](#Factory)</code>  
+**Returns**: <code>function</code> - - The factory to register.  
+<a name="Factory+policy"></a>
+
+## factory.policy ⇒ <code>piquouze.Policy</code>
+Returns the caching policy to register the factory with.
+
+**Kind**: instance property of <code>[Factory](#Factory)</code>  
+**Returns**: <code>piquouze.Policy</code> - - The caching policy to register the factory with.  
+<a name="Value"></a>
+
+# Value
+A store for a DI injectable value.
+
+**Kind**: global class  
+
+* [Value](#Value)
+    * [new Value(name, value)](#new_Value_new)
+    * [.name](#Value+name) ⇒ <code>String</code>
+    * [.value](#Value+value) ⇒ <code>\*</code>
+
+<a name="new_Value_new"></a>
+
+## new Value(name, value)
+Constructs a new injectable value storage.
+
+**Throws**:
+
+- <code>TypeError</code> Whenever the name is not a string.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name to register the value with. |
+| value | <code>\*</code> | The value to register. |
+
+<a name="Value+name"></a>
+
+## value.name ⇒ <code>String</code>
+Returns the name to register the value with.
+
+**Kind**: instance property of <code>[Value](#Value)</code>  
+**Returns**: <code>String</code> - - The name to register the value with.  
+<a name="Value+value"></a>
+
+## value.value ⇒ <code>\*</code>
+Returns the value to register.
+
+**Kind**: instance property of <code>[Value](#Value)</code>  
+**Returns**: <code>\*</code> - - The value to register.  
 <a name="statuses"></a>
 
 # statuses : <code>enum</code>

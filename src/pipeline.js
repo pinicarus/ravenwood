@@ -3,9 +3,11 @@
 const P = require("bluebird");
 
 const {Response} = require("./response");
+const {arrayify} = require("./utils");
 
 const {
-	DI,
+	Factory,
+	Value,
 	transfer,
 } = require("./di");
 
@@ -46,18 +48,24 @@ const injector = function injector(container) {
  */
 const dispatcher = function dispatcher(container, mapping) {
 	return (data) => {
-		switch (true) {
-			case data instanceof Response:
-				container.registerValue(mapping("response"), data);
-				return data;
-			case data instanceof DI:
-				transfer(data, container, mapping);
-				// fallthrough
-			case data === undefined:
-				return null;
-			default:
-				throw new TypeError(`invalid stage result: ${data}`);
+		if (data instanceof Response) {
+			container.registerValue(mapping("response"), data);
+			return data;
 		}
+		arrayify(data).forEach((datum) => {
+			switch (true) {
+				case datum instanceof Factory:
+					// fallthrough
+				case datum instanceof Value:
+					transfer(datum, container, mapping);
+					// fallthrough
+				case datum === undefined:
+					break;
+				default:
+					throw new TypeError(`invalid stage result: ${datum}`);
+			}
+		});
+		return null;
 	};
 };
 
